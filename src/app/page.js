@@ -1,95 +1,160 @@
+"use client";
+
 import Image from "next/image";
-import styles from "./page.module.css";
+import { useState, useEffect } from "react";
+
+const initialAmounts = {
+  cola: 0,
+  dornaMinerala: 0,
+  dornaPlata: 0,
+  fanta: 0,
+  ursusFA: 0,
+  ursus: 0,
+  mici: 0,
+  pizza: 0,
+  hotDog: 0,
+  covrigei: 0,
+};
+
+const unitPrices = {
+  cola: 9,
+  dornaMinerala: 5.5,
+  dornaPlata: 5.5,
+  fanta: 9,
+  ursusFA: 7.5,
+  ursus: 7.5,
+  mici: 5,
+  pizza: 7.5,
+  hotDog: 7.5,
+  covrigei: 5,
+};
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [amounts, setAmounts] = useState(initialAmounts);
+  const [totalPrices, setTotalPrices] = useState(initialAmounts);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
+  useEffect(() => {
+    const restoredAmounts = { ...initialAmounts };
+    const restoredPrices = { ...initialAmounts };
+
+    Object.keys(initialAmounts).forEach((product) => {
+      const stored = localStorage.getItem(product);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          restoredAmounts[product] = parsed.amount;
+          restoredPrices[product] = parsed.price;
+        } catch (e) {
+          console.error("Eroare la parsare pentru:", product, e);
+        }
+      }
+    });
+
+    setAmounts(restoredAmounts);
+    setTotalPrices(restoredPrices);
+  }, []);
+
+  const updateLocalStorage = (product, amount, price) => {
+    localStorage.setItem(product, JSON.stringify({ amount, price }));
+  };
+
+  const increaseAmount = (product) => {
+    const newAmount = amounts[product] + 1;
+    const newPrice = unitPrices[product] * newAmount;
+
+    const updatedAmounts = { ...amounts, [product]: newAmount };
+    const updatedPrices = { ...totalPrices, [product]: newPrice };
+
+    setAmounts(updatedAmounts);
+    setTotalPrices(updatedPrices);
+    updateLocalStorage(product, newAmount, newPrice);
+  };
+
+  const decreaseAmount = (product) => {
+    const newAmount = Math.max(amounts[product] - 1, 0);
+    const newPrice = unitPrices[product] * newAmount;
+
+    const updatedAmounts = { ...amounts, [product]: newAmount };
+    const updatedPrices = { ...totalPrices, [product]: newPrice };
+
+    setAmounts(updatedAmounts);
+    setTotalPrices(updatedPrices);
+    updateLocalStorage(product, newAmount, newPrice);
+  };
+
+  const allProducts = [
+    {
+      name: "Cola Zero 0.5",
+      key: "cola",
+      prodImg: "/assets/colaZero-removebg.png",
+    },
+    {
+      name: "Dorna Minerala 0.5",
+      key: "dornaMinerala",
+      prodImg: "/assets/dornaMinerala-removebg.png",
+    },
+    {
+      name: "Dorna Plata 0.5",
+      key: "dornaPlata",
+      prodImg: "/assets/dornaPlata-removebg.png",
+    },
+    { name: "Fanta 0.5", key: "fanta", prodImg: "/assets/fanta-removebg.png" },
+    {
+      name: "Ursus F.A 0.5",
+      key: "ursusFA",
+      prodImg: "/assets/ursusFA-removebg.png",
+    },
+    { name: "Ursus", key: "ursus", prodImg: "/assets/ursusA-removebg.png" },
+    { name: "Mici", key: "mici", prodImg: "/assets/mici-removebg.png" },
+    { name: "Pizza", key: "pizza", prodImg: "/assets/pizza-removebg.png" },
+    { name: "Hot-Dog", key: "hotDog", prodImg: "/assets/hotDog-removebg.png" },
+    {
+      name: "Covrigei",
+      key: "covrigei",
+      prodImg: "/assets/covrigei-removebg.png",
+    },
+  ];
+
+  const total = Object.values(totalPrices).reduce(
+    (sum, price) => sum + price,
+    0
+  );
+
+  return (
+    <div>
+      <main className="mainScreen">
+        {allProducts.map((p) => (
+          <Product
+            key={p.key}
+            name={p.name}
+            img={p.prodImg}
+            amount={amounts[p.key]}
+            price={totalPrices[p.key]}
+            onIncrease={() => increaseAmount(p.key)}
+            onDecrease={() => decreaseAmount(p.key)}
+          />
+        ))}
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <hr />
+      <h2>Total: {total.toFixed(2)} lei</h2>
+    </div>
+  );
+}
+
+function Product({ name, amount, price, onIncrease, onDecrease, img }) {
+  return (
+    <div style={{ marginBottom: "1rem" }}>
+      <div className="infoProd">
+        {img && <Image src={img} alt={name} width={100} height={100} />}
+        {name}
+      </div>
+      <div className="amount_container">
+        <button onClick={onDecrease}>-</button>
+        {amount} buc
+        <button onClick={onIncrease}>+</button>
+      </div>
+      {price.toFixed(2)} lei
     </div>
   );
 }
