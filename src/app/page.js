@@ -33,6 +33,8 @@ export default function Home() {
   const [amounts, setAmounts] = useState(initialAmounts);
   const [totalPrices, setTotalPrices] = useState(initialAmounts);
 
+  const basePath = process.env.NODE_ENV === "production" ? "/prodCount" : "";
+
   useEffect(() => {
     const restoredAmounts = { ...initialAmounts };
     const restoredPrices = { ...initialAmounts };
@@ -86,32 +88,52 @@ export default function Home() {
     {
       name: "Cola Zero 0.5",
       key: "cola",
-      prodImg: "/assets/colaZero-removebg.png",
+      prodImg: `${basePath}/assets/cola-removebg.png`,
     },
     {
       name: "Dorna Minerala 0.5",
       key: "dornaMinerala",
-      prodImg: "/assets/dornaMinerala-removebg.png",
+      prodImg: `${basePath}/assets/dornaMinerala-removebg.png`,
     },
     {
       name: "Dorna Plata 0.5",
       key: "dornaPlata",
-      prodImg: "/assets/dornaPlata-removebg.png",
+      prodImg: `${basePath}/assets/dornaPlata-removebg.png`,
     },
-    { name: "Fanta 0.5", key: "fanta", prodImg: "/assets/fanta-removebg.png" },
+    {
+      name: "Fanta 0.5",
+      key: "fanta",
+      prodImg: `${basePath}/assets/fanta-removebg.png`,
+    },
     {
       name: "Ursus F.A 0.5",
       key: "ursusFA",
-      prodImg: "/assets/ursusFA-removebg.png",
+      prodImg: `${basePath}/assets/ursusFA-removebg.png`,
     },
-    { name: "Ursus", key: "ursus", prodImg: "/assets/ursusA-removebg.png" },
-    { name: "Mici", key: "mici", prodImg: "/assets/mici-removebg.png" },
-    { name: "Pizza", key: "pizza", prodImg: "/assets/pizza-removebg.png" },
-    { name: "Hot-Dog", key: "hotDog", prodImg: "/assets/hotDog-removebg.png" },
+    {
+      name: "Ursus",
+      key: "ursus",
+      prodImg: `${basePath}/assets/ursusA-removebg.png`,
+    },
+    {
+      name: "Mici",
+      key: "mici",
+      prodImg: `${basePath}/assets/mici-removebg.png`,
+    },
+    {
+      name: "Pizza",
+      key: "pizza",
+      prodImg: `${basePath}/assets/pizza-removebg.png`,
+    },
+    {
+      name: "Hot-Dog",
+      key: "hotDog",
+      prodImg: `${basePath}/assets/hotDog-removebg.png`,
+    },
     {
       name: "Covrigei",
       key: "covrigei",
-      prodImg: "/assets/covrigei-removebg.png",
+      prodImg: `${basePath}/assets/covrigei-removebg.png`,
     },
   ];
 
