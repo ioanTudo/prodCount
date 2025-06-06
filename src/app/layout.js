@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./globals.css"; // AICI import global corect
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,6 +11,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const basePath = process.env.NODE_ENV === "production" ? "/prodCount" : "";
+
 export const metadata = {
   title: "Product counter",
   description: "Product counter for cascarabeta",
@@ -20,7 +22,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/assets/cash-register-removebg-preview.png" />
+        <link
+          rel="icon"
+          href={`${basePath}/assets/cash-register-removebg-preview.png`}
+        />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
