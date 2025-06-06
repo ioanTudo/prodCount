@@ -120,10 +120,7 @@ export default function Home() {
             <Image src={p.img} alt={p.name} width={100} height={100} />
             <div className="infoProd">
               <strong>{p.name}</strong>
-              <p>
-                {amounts[p.key]} × {unitPrices[p.key]} lei ={" "}
-                {totalPrices[p.key].toFixed(2)} lei
-              </p>
+              <p>{totalPrices[p.key].toFixed(2)} lei</p>
               <div className="amount_container">
                 <button onClick={() => decreaseAmount(p.key)}>-</button>
                 {amounts[p.key]} buc
