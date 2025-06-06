@@ -1,5 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css"; // AICI import global corect
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +26,12 @@ export default function RootLayout({ children }) {
           rel="icon"
           href={`${basePath}/assets/cash-register-removebg-preview.png`}
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Geist+Sans&family=Geist+Mono&display=swap"
+          rel="stylesheet"
+        />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
+      <body style={{ fontFamily: "Geist Sans, sans-serif" }}>{children}</body>
     </html>
   );
 }
