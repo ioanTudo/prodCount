@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import "./globals.css";
 
 const initialAmounts = {
   cola: 0,
@@ -32,8 +33,6 @@ const unitPrices = {
 export default function Home() {
   const [amounts, setAmounts] = useState(initialAmounts);
   const [totalPrices, setTotalPrices] = useState(initialAmounts);
-
-  const basePath = process.env.NODE_ENV === "production" ? "/prodCount" : "";
 
   useEffect(() => {
     const restoredAmounts = { ...initialAmounts };
@@ -85,98 +84,58 @@ export default function Home() {
   };
 
   const allProducts = [
-    {
-      name: "Cola Zero 0.5",
-      key: "cola",
-      prodImg: `${basePath}/assets/cola-removebg.png`,
-    },
+    { name: "Cola Zero 0.5", key: "cola", img: "/assets/cola-removebg.png" },
     {
       name: "Dorna Minerala 0.5",
       key: "dornaMinerala",
-      prodImg: `${basePath}/assets/dornaMinerala-removebg.png`,
+      img: "/assets/dornaMinerala-removebg.png",
     },
     {
       name: "Dorna Plata 0.5",
       key: "dornaPlata",
-      prodImg: `${basePath}/assets/dornaPlata-removebg.png`,
+      img: "/assets/dornaPlata-removebg.png",
     },
-    {
-      name: "Fanta 0.5",
-      key: "fanta",
-      prodImg: `${basePath}/assets/fanta-removebg.png`,
-    },
+    { name: "Fanta 0.5", key: "fanta", img: "/assets/fanta-removebg.png" },
     {
       name: "Ursus F.A 0.5",
       key: "ursusFA",
-      prodImg: `${basePath}/assets/ursusFA-removebg.png`,
+      img: "/assets/ursusFA-removebg.png",
     },
-    {
-      name: "Ursus",
-      key: "ursus",
-      prodImg: `${basePath}/assets/ursusA-removebg.png`,
-    },
-    {
-      name: "Mici",
-      key: "mici",
-      prodImg: `${basePath}/assets/mici-removebg.png`,
-    },
-    {
-      name: "Pizza",
-      key: "pizza",
-      prodImg: `${basePath}/assets/pizza-removebg.png`,
-    },
-    {
-      name: "Hot-Dog",
-      key: "hotDog",
-      prodImg: `${basePath}/assets/hotDog-removebg.png`,
-    },
-    {
-      name: "Covrigei",
-      key: "covrigei",
-      prodImg: `${basePath}/assets/covrigei-removebg.png`,
-    },
+    { name: "Ursus", key: "ursus", img: "/assets/ursusA-removebg.png" },
+    { name: "Mici", key: "mici", img: "/assets/mici-removebg.png" },
+    { name: "Pizza", key: "pizza", img: "/assets/pizza-removebg.png" },
+    { name: "Hot-Dog", key: "hotDog", img: "/assets/hotDog-removebg.png" },
+    { name: "Covrigei", key: "covrigei", img: "/assets/covrigei-removebg.png" },
   ];
 
-  const total = Object.values(totalPrices).reduce(
-    (sum, price) => sum + price,
-    0
-  );
+  const total = Object.values(totalPrices).reduce((sum, p) => sum + p, 0);
 
   return (
-    <div>
-      <main className="mainScreen">
+    <div style={{ padding: "1rem" }}>
+      <h1>Product Counter</h1>
+
+      <div className="mainScreen">
         {allProducts.map((p) => (
-          <Product
-            key={p.key}
-            name={p.name}
-            img={p.prodImg}
-            amount={amounts[p.key]}
-            price={totalPrices[p.key]}
-            onIncrease={() => increaseAmount(p.key)}
-            onDecrease={() => decreaseAmount(p.key)}
-          />
+          <div key={p.key} className="product">
+            <Image src={p.img} alt={p.name} width={100} height={100} />
+            <div className="infoProd">
+              <strong>{p.name}</strong>
+              <p>
+                {amounts[p.key]} × {unitPrices[p.key]} lei ={" "}
+                {totalPrices[p.key].toFixed(2)} lei
+              </p>
+              <div className="amount_container">
+                <button onClick={() => decreaseAmount(p.key)}>-</button>
+                {amounts[p.key]} buc
+                <button onClick={() => increaseAmount(p.key)}>+</button>
+              </div>
+            </div>
+          </div>
         ))}
-      </main>
+      </div>
 
       <hr />
       <h2>Total: {total.toFixed(2)} lei</h2>
-    </div>
-  );
-}
-
-function Product({ name, amount, price, onIncrease, onDecrease, img }) {
-  return (
-    <div style={{ marginBottom: "1rem" }}>
-      <div className="infoProd">
-        {img && <Image src={img} alt={name} width={100} height={100} />}
-        {name}
-      </div>
-      <div className="amount_container">
-        <button onClick={onDecrease}>-</button>
-        {amount} buc
-        <button onClick={onIncrease}>+</button>
-      </div>
-      {price.toFixed(2)} lei
     </div>
   );
 }
