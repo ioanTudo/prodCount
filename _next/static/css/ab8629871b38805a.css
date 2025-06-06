@@ -1,0 +1,1 @@
+.mainScreen{display:grid;text-align:center}.amount_container{display:flex;align-items:center;gap:10px}.infoProd{display:flex;flex-direction:column;justify-self:center}.amount_container button{width:70px;height:70px}@media (min-width:320px){.mainScreen{grid-template-columns:1fr 1fr;gap:50px;justify-self:center}.amount_container{flex-direction:row}}
