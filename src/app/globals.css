@@ -20,6 +20,10 @@
 .amount_container button {
   width: 70px;
   height: 70px;
+
+  margin: auto;
+
+  text-align: center;
 }
 
 @media (min-width: 320px) {
